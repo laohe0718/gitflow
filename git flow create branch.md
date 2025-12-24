@@ -136,7 +136,7 @@ git push -u origin feature/create-branch
 ### 🎯 9. 完成功能（合并回 develop 并清理）
 
 ```powershell
-# 合并 feature/create-branch 到 develop，并删除本地分支
+# 合并 feature/create-branch 到 develop，并删除本地和远程分支
 git flow feature finish create-branch
 ```
 
@@ -149,13 +149,7 @@ git checkout develop
 git push
 ```
 
-### （可选）删除远程 feature 分支：
 
-```powershell
-git push origin --delete feature/create-branch
-```
-
----
 
 ### ✅ 最终验证
 
@@ -169,14 +163,154 @@ git branch -r
 # 应包含 origin/main, origin/develop
 ```
 
+
+
+## ✅ 将 develop 合并到 main 的完整步骤
+
+> 💡 **前提**：`develop` 分支已经包含了所有准备发布的功能（如你已完成 `feature/create-branch` 并合并回 `develop`）
+
 ---
+
+### 🚀 1. 确保 develop 分支是最新的
+
+```powershell
+# 切换到 develop 分支
+git checkout develop
+
+# 拉取最新远程内容
+git pull origin develop
+```
+
+---
+
+### 📦 2. 开始发布分支（Git Flow 标准流程）
+
+```powershell
+# 创建发布分支（例如：v1.0.0）
+git flow release start v1.0.0
+```
+
+> 这会从 `develop` 创建 `release/v1.0.0` 分支，用于：
+> - 最后的测试
+> - 修复发布前的 bug
+> - 准备版本说明
+
+---
+
+### 🧪 3. （可选）在发布分支上进行最后测试/修复
+
+```powershell
+# 例如：添加版本说明文件
+@"
+# 版本 v1.0.0 发布说明
+
+## 新增功能
+- 用户身份验证模块 (feature/create-branch)
+- 手机号+验证码登录
+
+## 修复
+- 无
+"@ | Out-File -Encoding UTF8 RELEASE_NOTES.md
+
+# 提交
+git add RELEASE_NOTES.md
+git commit -m "docs: add release notes for v1.0.0"
+```
+
+---
+
+### 🎯 4. 完成发布（合并到 main 和 develop，并打标签）
+
+```powershell
+# 完成发布（会自动合并到 main 和 develop，并打 v1.0.0 标签）
+git flow release finish v1.0.0
+```
+
+> 这一步会：
+> 1. 将 `release/v1.0.0` 合并到 `main`
+> 2. 在 `main` 上创建 `v1.0.0` 标签
+> 3. 将 `release/v1.0.0` 合并到 `develop`
+> 4. 删除 `release/v1.0.0` 分支
+
+---
+
+### ☁️ 5. 推送所有变更到 GitHub
+
+```powershell
+# 推送 main（包含新合并的内容）
+git checkout main
+git push origin main
+
+# 推送 develop（同步发布内容）
+git checkout develop
+git push origin develop
+
+# 推送标签
+git push origin --tags
+```
+
+---
+
+### 📊 6. 验证合并结果
+
+```powershell
+# 查看分支状态
+git branch -a
+
+# 查看标签
+git tag -l
+
+# 查看 main 分支的最新提交
+git log --oneline -5 main
+```
+
+✅ 你应该看到：
+- `main` 和 `develop` 分支内容一致（或 `main` 包含 `develop` 的所有内容）
+- 存在 `v1.0.0` 标签
+- GitHub 上 `main` 和 `develop` 都已更新
+
+---
+
+## 🔄 简化版（直接合并，不走发布流程）
+
+> ❗ **不推荐**，但如果你不需要 Git Flow 的发布管理，可以：
+
+```powershell
+# 切换到 main
+git checkout main
+
+# 拉取最新内容
+git pull origin main
+
+# 合并 develop
+git merge develop --no-ff -m "merge develop into main for release"
+
+# 推送 main
+git push origin main
+```
+
+> ⚠️ 这种方式**不会创建发布标签**，也不符合 Git Flow 标准。
+
+---
+
+## 📌 最佳实践总结
+
+| 操作 | 推荐方式 | 原因 |
+|------|----------|------|
+| `develop` → `main` | `git flow release` | 标准 Git Flow，支持版本管理 |
+| 版本标记 | `v1.0.0` 标签 | 便于回溯、CI/CD 集成 |
+| 推送顺序 | `main` → `develop` → `tags` | 确保一致性 |
+| 协作 | 使用 Pull Request | 代码审查、变更记录 |
+
+---
+
+现在你已经成功将 `develop` 的内容合并到 `main`，并按照 Git Flow 标准完成了版本发布！🎉
+
+如果需要配置 GitHub Actions 自动化发布流程，也可以继续问我 😊
 
 ## 📌 总结
 
-| 步骤 | 内容 |
-|------|------|
-| **第一步** | 通过 Git Bash 安装 `git-flow AVH`，验证版本 |
-| **第二步** | 从 `git init` 到 `git flow feature finish` 全流程，含 GitHub 推送 |
+此文档包含从 `git init` 到 `git flow feature finish` 全流程，含 GitHub 推送
 
 
 
