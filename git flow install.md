@@ -2,8 +2,6 @@
 
 ---
 
-## ✅ 第一步：准备环境（Windows）
-
 > 目标：在 Windows 上通过 Git for Windows 安装 `git-flow AVH Edition`，使其可在 PowerShell 或 Git Bash 中使用。
 
 ### 1. 确保已安装 Git for Windows
