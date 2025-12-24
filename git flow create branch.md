@@ -109,15 +109,10 @@ Switched to a new branch 'feature/create-branch'
 
 ```powershell
 # 创建功能说明文件
-@"
-# 功能：laohe0718
-- 实现用户身份验证模块
-- 支持手机号+验证码登录
-- 前端页面原型设计
-"@ | Out-File -Encoding UTF8 feature_spec.md
+添加文件 git flow create branch.md
 
 # 提交更改
-git add feature_spec.md
+git add flow create branch.md
 git commit -m "feat(laohe0718): add feature specification"
 ```
 

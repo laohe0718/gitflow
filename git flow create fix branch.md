@@ -26,6 +26,14 @@ v1.0.2
 ```powershell
 # 基于 v1.0.2 创建热修复分支
 git flow hotfix start v1.0.3 v1.0.2
+
+# 确保 main 是最新的(如何git flow hotfix start v1.0.3 v1.0.2 一直报错就采用下面这个方案)
+git checkout main
+git pull origin main
+
+# 从当前 main 创建热修复分支
+git flow hotfix start v1.0.3
+
 ```
 
 > 💡 参数说明：
@@ -44,26 +52,7 @@ Switched to a new branch 'hotfix/v1.0.3'
 ### 🐛 3. 修复 bug
 
 ```powershell
-# 假设发现 v1.0.2 中登录模块有 bug
-@"
-// 修复登录模块的安全漏洞
-// 原代码：直接返回用户信息，现在添加权限验证
-
-function secureLogin(username, password) {
-  // 添加密码强度验证
-  if (!validatePassword(password)) {
-    throw new Error('Invalid password format');
-  }
-  
-  // 添加登录次数限制
-  if (checkLoginAttempts(username) > 5) {
-    throw new Error('Too many login attempts');
-  }
-  
-  // 原始登录逻辑
-  return authenticateUser(username, password);
-}
-"@ | Out-File -Encoding UTF8 security_fix.js
+添加文件 git flow create fix branch.md
 ```
 
 ---
@@ -72,10 +61,10 @@ function secureLogin(username, password) {
 
 ```powershell
 # 添加修复文件
-git add security_fix.js
+git add git flow create fix branch.md
 
 # 提交修复（使用 fix 类型）
-git commit -m "fix: add security validation for login module in v1.0.2"
+git commit -m "fix: add git flow create fix branch in v1.0.3"
 ```
 
 > 💡 提交信息格式：`fix(scope): description`
