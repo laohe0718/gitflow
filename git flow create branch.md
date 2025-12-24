@@ -1,6 +1,6 @@
 创建新分支并提交全流程
 
-## ✅ 第二步：创建并完成 feature/create-branch（从零到推送到 GitHub）
+## ✅ 创建并完成 feature/create-branch（从零到推送到 GitHub）
 
 > 目标：初始化项目 → 关联 GitHub → 创建功能分支 → 添加内容 → 提交 → 推送 → 完成功能
 
@@ -271,29 +271,19 @@ git log --oneline -5 main
 
 ---
 
-## 🔄 简化版（直接合并，不走发布流程）
 
-> ❗ **不推荐**，但如果你不需要 Git Flow 的发布管理，可以：
+## 📌 Git Flow 完整流程总结
 
-```powershell
-# 切换到 main
-git checkout main
+此文档包含从 `git init` 到 `git flow feature finish` 全流程，含 GitHub 推送
 
-# 拉取最新内容
-git pull origin main
+### 🧰 安装与初始化
 
-# 合并 develop
-git merge develop --no-ff -m "merge develop into main for release"
+| 步骤 | 内容 |
+|------|------|
+| **第一步** | 通过 Git Bash 安装 `git-flow AVH`，验证版本 |
+| **第二步** | 从 `git init` 到 `git flow feature finish` 全流程，含 GitHub 推送 |
 
-# 推送 main
-git push origin main
-```
-
-> ⚠️ 这种方式**不会创建发布标签**，也不符合 Git Flow 标准。
-
----
-
-## 📌 最佳实践总结
+### 🚀 最佳实践
 
 | 操作 | 推荐方式 | 原因 |
 |------|----------|------|
@@ -302,15 +292,22 @@ git push origin main
 | 推送顺序 | `main` → `develop` → `tags` | 确保一致性 |
 | 协作 | 使用 Pull Request | 代码审查、变更记录 |
 
----
+### 🔄 核心分支模型
 
-现在你已经成功将 `develop` 的内容合并到 `main`，并按照 Git Flow 标准完成了版本发布！🎉
+| 分支类型 | 作用 | 操作命令 |
+|----------|------|----------|
+| `main` | 生产分支 | `git checkout main` |
+| `develop` | 开发分支 | `git checkout develop` |
+| `feature/*` | 功能开发 | `git flow feature start/finish` |
+| `release/*` | 版本发布 | `git flow release start/finish` |
+| `hotfix/*` | 紧急修复 | `git flow hotfix start/finish` |
 
-如果需要配置 GitHub Actions 自动化发布流程，也可以继续问我 😊
+### 📋 完整工作流
 
-## 📌 总结
+1. **环境准备** → 安装 Git Flow
+2. **项目初始化** → `git init` + `git flow init`
+3. **功能开发** → `feature start` → 编码 → `feature finish`
+4. **版本发布** → `release start` → 测试 → `release finish`
+5. **生产部署** → 合并 `main` → 推送标签
 
-此文档包含从 `git init` 到 `git flow feature finish` 全流程，含 GitHub 推送
-
-
-
+> 💡 遵循此流程可确保代码质量、版本可控、协作高效。
